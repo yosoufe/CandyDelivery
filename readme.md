@@ -1,7 +1,12 @@
 # My  notes
 
+## Environment setup
 ```bash
+conda create --name lerobot python=3.13
 conda activate lerobot
+
+cd ../lerobot
+python -m pip install -e .[feetech]
 ```
 
 
@@ -9,8 +14,10 @@ Finding the port of the robot
 
 ```bash
 lerobot-find-port
-# /dev/ttyACM0 # first robot (follower)
-# /dev/ttyACM1 # second robot (leader)
+
+export FOLLOWER_PORT=/dev/ttyACM1 && \
+  export LEADER_PORT=/dev/ttyACM0
+
 ```
 
 # Setting motor ids
@@ -27,7 +34,7 @@ sudo usermod -a -G dialout $USER
 
 lerobot-calibrate \
     --robot.type=so100_follower \
-    --robot.port=/dev/ttyACM0 \
+    --robot.port=${FOLLOWER_PORT} \
     --robot.id=follower_100
 
 cp /home/yousof/.cache/huggingface/lerobot/calibration/robots/so_follower/follower_100.json .
@@ -36,7 +43,7 @@ cp follower_100.json /home/yousof/.cache/huggingface/lerobot/calibration/robots/
 
 lerobot-calibrate \
     --teleop.type=so100_leader \
-    --teleop.port=/dev/ttyACM0 \
+    --teleop.port=${LEADER_PORT} \
     --teleop.id=leader_100
 
 cp /home/yousof/.cache/huggingface/lerobot/calibration/teleoperators/so_leader/leader_100.json .
@@ -74,10 +81,10 @@ connect the follower first, then the leader
 ```bash
 lerobot-teleoperate \
     --robot.type=so100_follower \
-    --robot.port=/dev/ttyACM0 \
+    --robot.port=${FOLLOWER_PORT} \
     --robot.id=follower_100 \
     --teleop.type=so100_leader \
-    --teleop.port=/dev/ttyACM1 \
+    --teleop.port=${LEADER_PORT} \
     --teleop.id=leader_100
 ```
 
@@ -86,11 +93,11 @@ lerobot-teleoperate \
 ```bash
 lerobot-teleoperate \
     --robot.type=so100_follower \
-    --robot.port=/dev/ttyACM0 \
+    --robot.port=${FOLLOWER_PORT} \
     --robot.id=follower_100 \
     --robot.cameras="{ front: {type: opencv, index_or_path: 1, width: 640, height: 480, fps: 30}}" \
     --teleop.type=so100_leader \
-    --teleop.port=/dev/ttyACM1 \
+    --teleop.port=${LEADER_PORT} \
     --teleop.id=leader_100 \
     --display_data=true
 ```
