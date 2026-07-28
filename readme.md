@@ -6,7 +6,7 @@ conda create --name lerobot python=3.13
 conda activate lerobot
 
 cd ../lerobot
-python -m pip install -e .[feetech]
+python -m pip install -e .[feetech,viz]
 ```
 
 
@@ -90,16 +90,23 @@ lerobot-teleoperate \
 
 # Teleop with camera
 
+Finding the camera and camera's supported parameters.
+```bash
+lerobot-find-cameras opencv
+v4l2-ctl --device=/dev/video4 --list-formats-ext
+```
+
 ```bash
 lerobot-teleoperate \
     --robot.type=so100_follower \
     --robot.port=${FOLLOWER_PORT} \
     --robot.id=follower_100 \
-    --robot.cameras="{ front: {type: opencv, index_or_path: 1, width: 640, height: 480, fps: 30}}" \
+    --robot.cameras="{ handeye: {type: opencv, backend: V4L2, index_or_path: 4, width: 640, height: 480, fps: 30, fourcc: 'MJPG'}}" \
     --teleop.type=so100_leader \
     --teleop.port=${LEADER_PORT} \
     --teleop.id=leader_100 \
     --display_data=true
+
 ```
 
 
