@@ -101,7 +101,7 @@ lerobot-teleoperate \
     --robot.type=so100_follower \
     --robot.port=${FOLLOWER_PORT} \
     --robot.id=follower_100 \
-    --robot.cameras="{ handeye: {type: opencv, backend: V4L2, index_or_path: 4, width: 640, height: 480, fps: 30, fourcc: 'MJPG'}}" \
+    --robot.cameras="{ handeye: {type: opencv, backend: V4L2, index_or_path: 2, width: 640, height: 480, fps: 30, fourcc: 'MJPG'}}" \
     --teleop.type=so100_leader \
     --teleop.port=${LEADER_PORT} \
     --teleop.id=leader_100 \
